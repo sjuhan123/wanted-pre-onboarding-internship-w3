@@ -11,14 +11,14 @@ const HighlightedText = ({ parts, value }: IHighlitedKeyword) => {
     <>
       {parts.map((part, index) => (
         <React.Fragment key={index}>
-          {index > 0 && ' '} {/* 이전 파트와의 공백 유지 */}
+          {index > 0 && ' '}
           {index < parts.length - 1 ? (
             <p style={{ margin: '0', padding: '0' }}>
               {part}
               <Highlighted>{value}</Highlighted>
             </p>
           ) : (
-            <Remains>{part}</Remains> // 마지막 파트는 HighlightedText를 사용하지 않음
+            <Remains>{part}</Remains>
           )}
         </React.Fragment>
       ))}
