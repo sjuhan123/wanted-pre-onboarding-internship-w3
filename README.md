@@ -1,6 +1,6 @@
 # wanted-pre-onboarding-internship-w3
 
-원티드 프리온보딩 인턴십 2주차 과제
+원티드 프리온보딩 인턴십 3주차 과제
 
 ## 과제 소개
 
@@ -8,7 +8,7 @@
 
 ## 실행 방법
 
-- 배포 링크: wanted-pre-onboarding-internship-w3-27hm1d9n6-sjuhan123.vercel.app
+- [배포 링크](https://wanted-pre-onboarding-internship-w3.vercel.app/)
 - 로컬 실행 방법
   - git clone
   - npm install
