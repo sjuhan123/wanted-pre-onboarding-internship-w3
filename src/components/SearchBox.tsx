@@ -64,7 +64,7 @@ const SearchResultContainer = styled.div`
   width: 490px;
   max-height: 250px;
   position: absolute;
-  top: 360px;
+  top: 340px;
   padding: 18px;
   background-color: var(--white);
   border-radius: 20px;
