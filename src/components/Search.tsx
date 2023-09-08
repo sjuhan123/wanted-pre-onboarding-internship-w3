@@ -1,39 +1,39 @@
 import React, { useState } from 'react';
 import SearchBar from './SearchBar';
 
-import { debounce } from '../utils/debounce';
-import { setData } from '../utils/setData';
-import { CACHE_RESET_TIME, DEBOUNCE_TIME } from '../constants/apis';
+import { CACHE_RESET_TIME } from '../constants/apis';
 import { SickInfos } from '../types';
 import { getFromCacheStorage, setToCacheStorage } from '../utils/cacheStorage';
 import { getRecommendedWord } from '../apis/get';
 import SearchBox from './SearchBox';
 import styled from 'styled-components';
 import { ReactComponent as SearchIcon } from '../assets/icon-search.svg';
-
-const debouncedFetchData = debounce(setData, DEBOUNCE_TIME);
+import useSearch from '../hooks/useSearch';
+import useModal from '../hooks/useModal';
 
 export default function Search() {
-  const [searchList, setSearchList] = useState<SickInfos>([]);
   const [inputValue, setInputValue] = useState<string>('');
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+  const { isOn, targetRef } = useModal(inputValue);
+
+  const searchList = useSearch<SickInfos>({
+    keyword: inputValue,
+    getCacheCallback: () => getFromCacheStorage(inputValue),
+    setCacheCallback: (data) => setToCacheStorage(inputValue, data, CACHE_RESET_TIME),
+    getAPICallback: () => getRecommendedWord(inputValue),
+  });
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    setSelectedIndex(-1);
     const keyword = e.target.value;
-    if (!keyword.trim()) return;
-    debouncedFetchData<SickInfos>({
-      getCacheCallback: () => getFromCacheStorage(keyword),
-      setCacheCallback: (data) => setToCacheStorage(keyword, data, CACHE_RESET_TIME),
-      getAPICallback: () => getRecommendedWord(keyword),
-      dispatchCallback: (data) => setSearchList(data),
-    });
+
+    setInputValue(keyword);
+    setSelectedIndex(-1);
   };
 
   const selectListItemByKeyArrow = (
     e: React.KeyboardEvent<HTMLInputElement> | React.KeyboardEvent<HTMLLIElement>,
   ) => {
+    if (!searchList) return;
     if (e.nativeEvent.isComposing) return;
     switch (e.key) {
       case 'ArrowDown': {
@@ -54,14 +54,14 @@ export default function Search() {
   };
 
   return (
-    <>
+    <div ref={targetRef}>
       <SearchBar
         inputValue={inputValue}
         setSelectedIndex={setSelectedIndex}
         selectListItemByKeyArrow={selectListItemByKeyArrow}
         changeHandler={changeHandler}
       />
-      {inputValue && (
+      {isOn && searchList && (
         <SearchBox
           searchList={searchList}
           selectedIndex={selectedIndex}
@@ -70,7 +70,7 @@ export default function Search() {
           inputValue={inputValue}
         />
       )}
-    </>
+    </div>
   );
 }
 
