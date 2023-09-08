@@ -39,8 +39,7 @@
   - Cache Storage에 기존 검색 결과 저장하고, expire time이 경과되면, cache를 삭제 후 API 호출
 
 ```js
-debouncedFetchData <
-  SickInfoList >
+debouncedFetchData <SickInfoList >
   {
     getCacheCallback: () => getFromCacheStorage(keyword),
     setCacheCallback: (data) => setToCacheStorage(keyword, data, CACHE_RESET_TIME),
