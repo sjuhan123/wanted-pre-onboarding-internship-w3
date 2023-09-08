@@ -1,10 +1,10 @@
 import { isEmptyArray } from './isEmptyArray';
 
-interface IsetDataProps<T> {
+export interface IsetDataProps<T> {
   getCacheCallback: () => Promise<T>;
   setCacheCallback: (data: T) => Promise<void>;
   getAPICallback: () => Promise<T>;
-  dispatchCallback: React.Dispatch<React.SetStateAction<T>>;
+  dispatchCallback: React.Dispatch<React.SetStateAction<T | undefined>>;
 }
 
 /**
